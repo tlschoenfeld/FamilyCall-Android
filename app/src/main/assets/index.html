@@ -10,6 +10,6 @@ function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 function parentMode(){if(prompt('Parent PIN')==='1234')document.getElementById('parent').classList.remove('hidden');else alert('Incorrect PIN')}
 function add(){let name=document.getElementById('name').value.trim(),number=document.getElementById('number').value.replace(/[\s().-]/g,'');if(!name||!/^\+?[0-9]{7,15}$/.test(number)){alert('Enter a name and valid number');return}contacts.push({id:Date.now(),name,number,group:document.getElementById('group').value});save();document.getElementById('name').value='';document.getElementById('number').value=''}
 function remove(id){if(confirm('Remove contact?')){contacts=contacts.filter(x=>x.id!==id);save()}}
-function call(id){let x=contacts.find(x=>x.id===id);if(!x)return;if(confirm('Call '+x.name+'?\n\nThis test may open the regular Phone app instead of Google Voice.')){localStorage.setItem('familycall_last_attempt',JSON.stringify({name:x.name,number:x.number,time:new Date().toISOString()}));Native.dial(x.number)}}
+function call(id){let x=contacts.find(x=>x.id===id);if(!x)return;if(confirm('Call '+x.name+'?\n\nThis test will try Google Voice only. If Google Voice does not support direct dialing, no call will launch.')){localStorage.setItem('familycall_last_attempt',JSON.stringify({name:x.name,number:x.number,time:new Date().toISOString()}));Native.dialVoice(x.number)}}
 render();
 </script></body></html>
