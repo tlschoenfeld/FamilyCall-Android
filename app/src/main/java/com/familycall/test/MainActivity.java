@@ -28,6 +28,16 @@ public class MainActivity extends Activity {
    try{startActivity(new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+number)));}
    catch(Exception e){Toast.makeText(MainActivity.this,"No dialer available",Toast.LENGTH_LONG).show();}
   });}
+  @JavascriptInterface public void dialVoice(String number) {runOnUiThread(()->{
+   if(!number.matches("\\\\+?[0-9]{7,15}")) {Toast.makeText(MainActivity.this,"Invalid number",Toast.LENGTH_SHORT).show();return;}
+   try {
+    Intent i=new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+number));
+    i.setPackage("com.google.android.apps.googlevoice");
+    startActivity(i);
+   } catch(Exception e) {
+    Toast.makeText(MainActivity.this,"Google Voice does not accept this dial request on this phone. No call launched.",Toast.LENGTH_LONG).show();
+   }
+  });}
   @JavascriptInterface public void exit() {runOnUiThread(()->finish());}
  }
 }
